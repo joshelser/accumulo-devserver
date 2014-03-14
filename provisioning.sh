@@ -109,6 +109,8 @@ echo "Configuring Zookeeper..."
 sudo mkdir /var/zookeeper
 sudo chown vagrant:vagrant /var/zookeeper
 
+cp $ZOOKEEPER_HOME/conf/zoo_sample.cfg $ZOOKEEPER_HOME/conf/
+
 echo "Running Zookeeper..."
 $ZOOKEEPER_HOME/bin/zkServer.sh start
 
