@@ -22,7 +22,7 @@ export VAGRANT_HOME=/home/vagrant
 export ACCUMULO_HOME=$VAGRANT_HOME/accumulo-$ACCUMULO_VER
 export HADOOP_HOME=$VAGRANT_HOME/hadoop-$HADOOP_VER
 export ZOOKEEPER_HOME=$VAGRANT_HOME/zookeeper-$ZOOKEEPER_VER
-export PATH=$PATH:$HADOOP_HOME/bin:$ACCUMULO_HOME/bin
+export PATH=$PATH:$VAGRANT_HOME/bin:$HADOOP_HOME/bin:$ACCUMULO_HOME/bin
 EOF
 
 export JAVA_HOME=/usr/lib/jvm/java-6-openjdk-amd64/
@@ -124,6 +124,10 @@ accumulo-dev-box
 EOF
 
 cat > $ACCUMULO_HOME/conf/slaves <<EOF
+accumulo-dev-box
+EOF
+
+cat > $ACCUMULO_HOME/conf/monitor <<EOF
 accumulo-dev-box
 EOF
 

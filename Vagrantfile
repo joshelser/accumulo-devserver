@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
       v.name = "accumulo-dev-box"
       v.customize ["modifyvm", :id, "--memory", "2048"]
     end
-    master.vm.network :private_network, ip: "10.211.55.100"
+    master.vm.network :private_network, ip: "10.211.55.111"
     master.vm.hostname = "accumulo-dev-box"
     master.vm.network "forwarded_port", guest: 35867, host: 35867
     master.vm.network "forwarded_port", guest: 50095, host: 50095
