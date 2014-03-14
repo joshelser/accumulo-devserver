@@ -50,7 +50,8 @@ ssh-keyscan localhost >> /home/vagrant/.ssh/known_hosts
 cat >> $HADOOP_HOME/conf/hadoop-env.sh <<EOF
 export JAVA_HOME=/usr/lib/jvm/java-6-openjdk-amd64/
 EOF
-cat > $HADOOOP_HOME/conf/core-site.xml <<EOF
+
+cat > $HADOOP_HOME/conf/core-site.xml <<EOF
 <?xml version="1.0"?>
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 
@@ -81,7 +82,7 @@ cat > $HADOOOP_HOME/conf/core-site.xml <<EOF
 </configuration>
 
 EOF
-cat > $HADOOP-HOME/conf/mapred-site.xml <<EOF
+cat > $HADOOP_HOME/conf/mapred-site.xml <<EOF
 <?xml version="1.0"?>
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 
@@ -99,17 +100,17 @@ cat > $HADOOP-HOME/conf/mapred-site.xml <<EOF
 </configuration>
 
 EOF
-$HADOOP-HOME/bin/hadoop namenode -format
+$HADOOP_HOME/bin/hadoop namenode -format
 
 echo "Starting Hadoop..."
-$HADOOP-HOME/bin/start-all.sh
+$HADOOP_HOME/bin/start-all.sh
 
 echo "Configuring Zookeeper..."
 sudo mkdir /var/zookeeper
 sudo chown vagrant:vagrant /var/zookeeper
 
 echo "Running Zookeeper..."
-$ZOOKEEPER-HOME/bin/zkServer.sh start
+$ZOOKEEPER_HOME/bin/zkServer.sh start
 
 echo "Configuring Accumulo..."
 cp $ACCUMULO_HOME/conf/examples/1GB/standalone/* $ACCUMULO_HOME/conf/
