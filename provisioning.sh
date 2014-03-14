@@ -1,45 +1,56 @@
 #!/bin/bash
 
-AC_VER=1.4.4
+ACCUMULO_VER=1.5.1
+HADOOP_VER=1.2.1
+ZOOKEEPER_VER=3.4.5
+
+VAGRANT_HOME=/home/vagrant
+ACCUMULO_HOME=$VAGRANT_HOME/accumulo-$ACCUMULO_VER
+HADOOP_HOME=$VAGRANT_HOME/hadoop-$HADOOP_VER
+ZOOKEEPER_HOME=$VAGRANT_HOME/zookeeper-$ZOOKEEPER_VER
 
 echo "Acquiring Java and curl from Ubuntu repos..."
 sudo apt-get -q update
 sudo apt-get -q install curl openjdk-6-jdk -y
 
 echo "Setting up environment..."
-cat >> /home/vagrant/.bashrc <<EOF
+cat >> $VAGRANT_HOME/.bashrc <<EOF
 export JAVA_HOME=/usr/lib/jvm/java-6-openjdk-amd64/
-export HADOOP_HOME=/home/vagrant/hadoop-0.20.2-cdh3u3
-export ZOOKEEPER_HOME=/home/vagrant/zookeeper-3.3.4-cdh3u3
-export PATH=$PATH:/home/vagrant/hadoop-0.20.2-cdh3u3/bin:/home/vagrant/accumulo-$AC_VER/bin
+export VAGRANT_HOME=/home/vagrant
+export ACCUMULO_HOME=$VAGRANT_HOME/accumulo-$ACCUMULO_VER
+export HADOOP_HOME=$VAGRANT_HOME/hadoop-$HADOOP_VER
+export ZOOKEEPER_HOME=$VAGRANT_HOME/zookeeper-$ZOOKEEPER_VER
+export PATH=$PATH:$HADOOP_HOME/bin:$ACCUMULO_HOME/bin
 EOF
+
 export JAVA_HOME=/usr/lib/jvm/java-6-openjdk-amd64/
-export HADOOP_HOME=/home/vagrant/hadoop-0.20.2-cdh3u3
-export ZOOKEEPER_HOME=/home/vagrant/zookeeper-3.3.4-cdh3u3
-export PATH=$PATH:/home/vagrant/hadoop-0.20.2-cdh3u3/bin:/home/vagrant/accumulo-$AC_VER/bin
+export ACCUMULO_HOME=$VAGRANT_HOME/accumulo-$ACCUMULO_VER
+export HADOOP_HOME=$VAGRANT_HOME/hadoop-$HADOOP_VER
+export ZOOKEEPER_HOME=$VAGRANT_HOME/zookeeper-$ZOOKEEPER_VER
+export PATH=$PATH:$HADOOP_HOME/bin:$ACCUMULO_HOME/bin
 
 echo "Acquiring archives..."
 cd /home/vagrant
 echo "- Hadoop"
-curl -O -L -s http://archive.cloudera.com/cdh/3/hadoop-0.20.2-cdh3u3.tar.gz
+curl -O -L -s http://apache.mirrors.tds.net/hadoop/common/hadoop-$HADOOP_VER/hadoop-$HADOOP_VER.tar.gz
 echo "- Zookeeper"
-curl -O -L -s http://archive.cloudera.com/cdh/3/zookeeper-3.3.4-cdh3u3.tar.gz
+curl -O -L -s http://apache.mirrors.tds.net/zookeeper/zookeeper-$ZOOKEEPER_VER/zookeeper-$ZOOKEEPER_VER.tar.gz
 echo "- Accumulo"
-curl -O -L -s http://apache.mesi.com.ar/accumulo/$AC_VER/accumulo-$AC_VER-dist.tar.gz
+curl -O -L -s http://apache.mirrors.tds.net/accumulo/$ACCUMULO_VER/accumulo-$ACCUMULO_VER-bin.tar.gz
 
 echo "Extracting archives..."
-tar -zxf hadoop-0.20.2-cdh3u3.tar.gz
-tar -zxf zookeeper-3.3.4-cdh3u3.tar.gz
-tar -zxf accumulo-$AC_VER-dist.tar.gz
+tar -zxf hadoop-$HADOOP_VER.tar.gz
+tar -zxf zookeeper-$ZOOKEEPER_VER.tar.gz
+tar -zxf accumulo-$ACCUMULO_VER-bin.tar.gz
 
 echo "Configuring Hadoop..."
 ssh-keygen -t rsa -f /home/vagrant/.ssh/id_rsa -N ''
 cat /home/vagrant/.ssh/id_rsa.pub >> /home/vagrant/.ssh/authorized_keys
 ssh-keyscan localhost >> /home/vagrant/.ssh/known_hosts
-cat >> hadoop-0.20.2-cdh3u3/conf/hadoop-env.sh <<EOF
+cat >> $HADOOP_HOME/conf/hadoop-env.sh <<EOF
 export JAVA_HOME=/usr/lib/jvm/java-6-openjdk-amd64/
 EOF
-cat > hadoop-0.20.2-cdh3u3/conf/core-site.xml <<EOF
+cat > $HADOOOP_HOME/conf/core-site.xml <<EOF
 <?xml version="1.0"?>
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 
@@ -70,7 +81,7 @@ cat > hadoop-0.20.2-cdh3u3/conf/core-site.xml <<EOF
 </configuration>
 
 EOF
-cat > hadoop-0.20.2-cdh3u3/conf/mapred-site.xml <<EOF
+cat > $HADOOP-HOME/conf/mapred-site.xml <<EOF
 <?xml version="1.0"?>
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 
@@ -88,38 +99,38 @@ cat > hadoop-0.20.2-cdh3u3/conf/mapred-site.xml <<EOF
 </configuration>
 
 EOF
-hadoop-0.20.2-cdh3u3/bin/hadoop namenode -format
+$HADOOP-HOME/bin/hadoop namenode -format
 
 echo "Starting Hadoop..."
-hadoop-0.20.2-cdh3u3/bin/start-all.sh
+$HADOOP-HOME/bin/start-all.sh
 
 echo "Configuring Zookeeper..."
 sudo mkdir /var/zookeeper
 sudo chown vagrant:vagrant /var/zookeeper
 
 echo "Running Zookeeper..."
-zookeeper-3.3.4-cdh3u3/bin/zkServer.sh start
+$ZOOKEEPER-HOME/bin/zkServer.sh start
 
 echo "Configuring Accumulo..."
-cp accumulo-$AC_VER/conf/examples/1GB/standalone/* accumulo-$AC_VER/conf/
+cp $ACCUMULO_HOME/conf/examples/1GB/standalone/* $ACCUMULO_HOME/conf/
 
-cat > ~/accumulo-$AC_VER/conf/masters <<EOF
+cat > $ACCUMULO_HOME/conf/masters <<EOF
 accumulo-dev-box
 EOF
 
-cat > ~/accumulo-$AC_VER/conf/slaves <<EOF
+cat > $ACCUMULO_HOME/conf/slaves <<EOF
 accumulo-dev-box
 EOF
 
-sed -i 's/>secret</>password</' accumulo-$AC_VER/conf/accumulo-site.xml
-accumulo-$AC_VER/bin/accumulo init --clear-instance-name <<EOF
+sed -i 's/>secret</>password</' $ACCUMULO_HOME/conf/accumulo-site.xml
+$ACCUMULO_HOME/bin/accumulo init --clear-instance-name <<EOF
 accumulo
 password
 password
 EOF
 
 echo "Starting Accumulo..."
-accumulo-$AC_VER/bin/start-all.sh
+$ACCUMULO_HOME/bin/start-all.sh
 
 echo 'Done!'
 
