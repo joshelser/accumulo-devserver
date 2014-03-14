@@ -9,6 +9,8 @@ ACCUMULO_HOME=$VAGRANT_HOME/accumulo-$ACCUMULO_VER
 HADOOP_HOME=$VAGRANT_HOME/hadoop-$HADOOP_VER
 ZOOKEEPER_HOME=$VAGRANT_HOME/zookeeper-$ZOOKEEPER_VER
 
+cp -R /vagrant/files/bin $VAGRANT_HOME
+
 echo "Acquiring Java and curl from Ubuntu repos..."
 sudo apt-get -q update
 sudo apt-get -q install curl openjdk-6-jdk -y
@@ -109,7 +111,7 @@ echo "Configuring Zookeeper..."
 sudo mkdir /var/zookeeper
 sudo chown vagrant:vagrant /var/zookeeper
 
-cp $ZOOKEEPER_HOME/conf/zoo_sample.cfg $ZOOKEEPER_HOME/conf/
+cp $ZOOKEEPER_HOME/conf/zoo_sample.cfg $ZOOKEEPER_HOME/conf/zoo.cfg
 
 echo "Running Zookeeper..."
 $ZOOKEEPER_HOME/bin/zkServer.sh start
