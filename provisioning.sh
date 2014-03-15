@@ -9,7 +9,7 @@ ACCUMULO_HOME=$VAGRANT_HOME/accumulo-$ACCUMULO_VER
 HADOOP_HOME=$VAGRANT_HOME/hadoop-$HADOOP_VER
 ZOOKEEPER_HOME=$VAGRANT_HOME/zookeeper-$ZOOKEEPER_VER
 
-cp -R /vagrant/files/bin $VAGRANT_HOME
+cp -R /vagrant/files/* $VAGRANT_HOME
 
 echo "Acquiring Java and curl from Ubuntu repos..."
 sudo apt-get -q update
@@ -22,7 +22,7 @@ export VAGRANT_HOME=/home/vagrant
 export ACCUMULO_HOME=$VAGRANT_HOME/accumulo-$ACCUMULO_VER
 export HADOOP_HOME=$VAGRANT_HOME/hadoop-$HADOOP_VER
 export ZOOKEEPER_HOME=$VAGRANT_HOME/zookeeper-$ZOOKEEPER_VER
-export PATH=$PATH:$VAGRANT_HOME/bin:$HADOOP_HOME/bin:$ACCUMULO_HOME/bin
+export PATH=$PATH:$HADOOP_HOME/bin:$ACCUMULO_HOME/bin
 EOF
 
 export JAVA_HOME=/usr/lib/jvm/java-6-openjdk-amd64/
@@ -30,6 +30,8 @@ export ACCUMULO_HOME=$VAGRANT_HOME/accumulo-$ACCUMULO_VER
 export HADOOP_HOME=$VAGRANT_HOME/hadoop-$HADOOP_VER
 export ZOOKEEPER_HOME=$VAGRANT_HOME/zookeeper-$ZOOKEEPER_VER
 export PATH=$PATH:$HADOOP_HOME/bin:$ACCUMULO_HOME/bin
+
+sudo sysctl vm.swappiness=10
 
 echo "Acquiring archives..."
 cd /home/vagrant
@@ -120,15 +122,23 @@ echo "Configuring Accumulo..."
 cp $ACCUMULO_HOME/conf/examples/1GB/standalone/* $ACCUMULO_HOME/conf/
 
 cat > $ACCUMULO_HOME/conf/masters <<EOF
-accumulo-dev-box
+accumulo-devbox
 EOF
 
 cat > $ACCUMULO_HOME/conf/slaves <<EOF
-accumulo-dev-box
+accumulo-devbox
 EOF
 
 cat > $ACCUMULO_HOME/conf/monitor <<EOF
-accumulo-dev-box
+accumulo-devbox
+EOF
+
+cat > $ACCUMULO_HOME/conf/gc <<EOF
+accumulo-devbox
+EOF
+
+cat > $ACCUMULO_HOME/conf/tracer <<EOF
+accumulo-devbox
 EOF
 
 sed -i 's/>secret</>password</' $ACCUMULO_HOME/conf/accumulo-site.xml
