@@ -32,9 +32,15 @@ export ZOOKEEPER_HOME=$VAGRANT_HOME/zookeeper-$ZOOKEEPER_VER
 export PATH=$PATH:$HADOOP_HOME/bin:$ACCUMULO_HOME/bin
 
 sudo sysctl vm.swappiness=10
-sudo cat >> /etc/sysctl.conf <<EOF
-vm.swappiness = 10
-EOF
+
+#
+# For some reason I get a permission denied when
+# just trying to write the new value.  Update the
+# perms before writing, then restore them.
+#
+sudo chmod 777 /etc/sysctl.conf
+echo "vm.swappiness = 10" >> /etc/sysctl.conf
+sudo chmod 644 /etc/sysctl.conf
 
 echo "Acquiring archives..."
 cd /home/vagrant
