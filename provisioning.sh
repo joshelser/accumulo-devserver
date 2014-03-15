@@ -104,6 +104,22 @@ cat > $HADOOP_HOME/conf/mapred-site.xml <<EOF
 </configuration>
 
 EOF
+
+cat > $HADOOP_HOME/conf/hdfs-site.xml <<EOF
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<!-- Put site-specific property overrides in this file. -->
+
+<configuration>
+   <property>
+       <name>dfs.datanode.synconclose</name>
+       <value>true</value>
+   </property>
+</configuration>
+
+EOF
+
 $HADOOP_HOME/bin/hadoop namenode -format
 
 echo "Starting Hadoop..."
