@@ -45,11 +45,11 @@ sudo chmod 644 /etc/sysctl.conf
 echo "Acquiring archives..."
 cd /home/vagrant
 echo "- Hadoop"
-curl -O -L -s http://apache.mirrors.tds.net/hadoop/common/hadoop-$HADOOP_VER/hadoop-$HADOOP_VER.tar.gz
+curl -O -L http://apache.mirrors.tds.net/hadoop/common/hadoop-$HADOOP_VER/hadoop-$HADOOP_VER.tar.gz
 echo "- Zookeeper"
-curl -O -L -s http://apache.mirrors.tds.net/zookeeper/zookeeper-$ZOOKEEPER_VER/zookeeper-$ZOOKEEPER_VER.tar.gz
+curl -O -L http://apache.mirrors.tds.net/zookeeper/zookeeper-$ZOOKEEPER_VER/zookeeper-$ZOOKEEPER_VER.tar.gz
 echo "- Accumulo"
-curl -O -L -s http://apache.mirrors.tds.net/accumulo/$ACCUMULO_VER/accumulo-$ACCUMULO_VER-bin.tar.gz
+curl -O -L http://apache.mirrors.tds.net/accumulo/$ACCUMULO_VER/accumulo-$ACCUMULO_VER-bin.tar.gz
 
 echo "Extracting archives..."
 tar -zxf hadoop-$HADOOP_VER.tar.gz
