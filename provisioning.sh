@@ -32,6 +32,9 @@ export ZOOKEEPER_HOME=$VAGRANT_HOME/zookeeper-$ZOOKEEPER_VER
 export PATH=$PATH:$HADOOP_HOME/bin:$ACCUMULO_HOME/bin
 
 sudo sysctl vm.swappiness=10
+cat >> /etc/sysctl.conf <<EOF
+vm.swappiness = 10
+EOF
 
 echo "Acquiring archives..."
 cd /home/vagrant
@@ -48,9 +51,11 @@ tar -zxf zookeeper-$ZOOKEEPER_VER.tar.gz
 tar -zxf accumulo-$ACCUMULO_VER-bin.tar.gz
 
 echo "Configuring Hadoop..."
+
 ssh-keygen -t rsa -f /home/vagrant/.ssh/id_rsa -N ''
 cat /home/vagrant/.ssh/id_rsa.pub >> /home/vagrant/.ssh/authorized_keys
 ssh-keyscan localhost >> /home/vagrant/.ssh/known_hosts
+
 cat >> $HADOOP_HOME/conf/hadoop-env.sh <<EOF
 export JAVA_HOME=/usr/lib/jvm/java-6-openjdk-amd64/
 EOF
@@ -65,6 +70,10 @@ cat > $HADOOP_HOME/conf/core-site.xml <<EOF
   <property>
     <name>fs.default.name</name>
     <value>hdfs://localhost:8020</value>
+  </property>
+  <property>
+    <name>hadoop.tmp.dir</name>
+    <value>/home/vagrant/data/hadoop</value>
   </property>
   <property>
     <name>mapred.child.java.opts</name>
@@ -130,6 +139,7 @@ sudo mkdir /var/zookeeper
 sudo chown vagrant:vagrant /var/zookeeper
 
 cp $ZOOKEEPER_HOME/conf/zoo_sample.cfg $ZOOKEEPER_HOME/conf/zoo.cfg
+sed -i 's,/tmp/zookeeper,/home/vagrant/data/zookeeper,' zookeeper-3.4.5/conf/zoo.cfg
 
 echo "Running Zookeeper..."
 $ZOOKEEPER_HOME/bin/zkServer.sh start
@@ -158,6 +168,7 @@ accumulo-devbox
 EOF
 
 sed -i 's/>secret</>password</' $ACCUMULO_HOME/conf/accumulo-site.xml
+
 $ACCUMULO_HOME/bin/accumulo init --clear-instance-name <<EOF
 accumulo
 password
