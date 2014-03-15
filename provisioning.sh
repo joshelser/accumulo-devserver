@@ -32,7 +32,7 @@ export ZOOKEEPER_HOME=$VAGRANT_HOME/zookeeper-$ZOOKEEPER_VER
 export PATH=$PATH:$HADOOP_HOME/bin:$ACCUMULO_HOME/bin
 
 sudo sysctl vm.swappiness=10
-cat >> /etc/sysctl.conf <<EOF
+sudo cat >> /etc/sysctl.conf <<EOF
 vm.swappiness = 10
 EOF
 
