@@ -169,7 +169,7 @@ cat > $ACCUMULO_HOME/conf/gc <<EOF
 accumulo-devbox
 EOF
 
-cat > $ACCUMULO_HOME/conf/tracer <<EOF
+cat > $ACCUMULO_HOME/conf/tracers <<EOF
 accumulo-devbox
 EOF
 
