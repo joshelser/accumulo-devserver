@@ -1,0 +1,21 @@
+stop all 
+  - accumulo
+  - zookeeper
+  - hadoop
+  - (ensure all are shutdown)
+
+rm -rf ~/data/zookeeper
+rm -rf ~/data/hadoop
+
+$HADOOP_HOME/bin/hadoop namenode -format
+$HADOOP_HOME/bin/start-all.sh
+
+<ensure http://accumulo-server:50070 shows status of hadoop>
+
+$ZOOKEEPER_HOME/bin/zkServer.sh start
+
+$ACCUMULO_HOME/bin/accumulo init --clear-instance-name
+  - instance name: accumulo
+  - password: password
+
+$ACCUMULO_HOME/bin/start-all.sh
