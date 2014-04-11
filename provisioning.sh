@@ -171,6 +171,10 @@ cat > $HADOOP_CONF_DIR/hdfs-site.xml <<EOF
     <name>dfs.datanode.data.dir</name>
     <value>file:/home/vagrant/data/hadoop/yarn-data/hdfs/datanode</value>
   </property>
+  <property>
+    <name>dfs.datanode.synconclose</name>
+    <value>true</value>
+  </property>
 </configuration>
 EOF
 
@@ -194,6 +198,8 @@ $ZOOKEEPER_HOME/bin/zkServer.sh start
 
 echo "Configuring Accumulo..."
 cp $ACCUMULO_HOME/conf/examples/1GB/standalone/* $ACCUMULO_HOME/conf/
+
+sed -i 's,# export ACCUMULO_MONITOR_BIND_ALL="true",export ACCUMULO_MONITOR_BIND_ALL="true",' $ACCUMULO_HOME/conf/accumulo-env.sh
 
 cat > $ACCUMULO_HOME/conf/masters <<EOF
 accumulo-devserver
