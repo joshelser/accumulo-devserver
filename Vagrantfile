@@ -15,7 +15,10 @@ Vagrant.configure("2") do |config|
     master.vm.network :private_network, ip: "10.211.55.111"
     master.vm.hostname = "accumulo-devserver"
     master.vm.network "forwarded_port", guest: 2181, host: 2181
-    master.vm.network "forwarded_port", guest: 50095, host: 5959
+    master.vm.network "forwarded_port", guest: 8042, host: 8042
+    master.vm.network "forwarded_port", guest: 8088, host: 8088
+    master.vm.network "forwarded_port", guest: 50070, host: 50070
+    master.vm.network "forwarded_port", guest: 50095, host: 50095
     master.vm.provision :shell, :path=> 'do_as_vagrant_user.sh'
   end
 

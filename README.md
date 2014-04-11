@@ -1,6 +1,9 @@
 # Introduction
 
-Spins up a VM with Hadoop, Zookeeper and Accumulo.  Version numbers can be specified in the provisioning.sh file
+Spins up a VM with Hadoop, Zookeeper and Accumulo.
+- Hadoop 2.4.0
+- Zookeeper 3.4.5
+- Accumulo 1.6.0-RC1
 
 # Getting Started
 
