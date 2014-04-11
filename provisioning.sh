@@ -95,6 +95,12 @@ ssh-keygen -t rsa -f /home/vagrant/.ssh/id_rsa -N ''
 cat /home/vagrant/.ssh/id_rsa.pub >> /home/vagrant/.ssh/authorized_keys
 ssh-keyscan localhost >> /home/vagrant/.ssh/known_hosts
 
+cat > /home/vagrant/.ssh/config <<EOF
+Host localhost
+    Hostname 0.0.0.0
+    StrictHostKeyChecking no
+EOF
+
 mkdir -p ~/data/hadoop/yarn-data/hdfs/namenode
 mkdir -p ~/data/hadoop/yarn-data/hdfs/datanode
 
