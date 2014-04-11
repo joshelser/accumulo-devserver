@@ -78,7 +78,6 @@ sudo sysctl -p
 
 cd $VAGRANT_HOME
 
-
 echo "Acquiring archives..."
 echo "- Hadoop"
 cd tars
@@ -101,6 +100,8 @@ mkdir -p ~/data/hadoop/yarn-data/hdfs/datanode
 
 sudo chown vagrant:vagrant -R ~/data/hadoop/yarn-data
 sudo chmod 750 ~/data/hadoop/yarn-data
+
+sed -i 's,${JAVA_HOME},/usr/lib/jvm/java-7-openjdk-amd64/,' $HADOOP_CONF_DIR/hadoop-env.sh
 
 cat > $HADOOP_CONF_DIR/core-site.xml <<EOF
 <?xml version="1.0"?>
