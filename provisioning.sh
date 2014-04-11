@@ -154,23 +154,23 @@ echo "Configuring Accumulo..."
 cp $ACCUMULO_HOME/conf/examples/1GB/standalone/* $ACCUMULO_HOME/conf/
 
 cat > $ACCUMULO_HOME/conf/masters <<EOF
-accumulo-devbox
+accumulo-devserver
 EOF
 
 cat > $ACCUMULO_HOME/conf/slaves <<EOF
-accumulo-devbox
+accumulo-devserver
 EOF
 
 cat > $ACCUMULO_HOME/conf/monitor <<EOF
-accumulo-devbox
+accumulo-devserver
 EOF
 
 cat > $ACCUMULO_HOME/conf/gc <<EOF
-accumulo-devbox
+accumulo-devserver
 EOF
 
 cat > $ACCUMULO_HOME/conf/tracers <<EOF
-accumulo-devbox
+accumulo-devserver
 EOF
 
 sed -i 's/>secret</>password</' $ACCUMULO_HOME/conf/accumulo-site.xml
@@ -185,4 +185,3 @@ echo "Starting Accumulo..."
 $ACCUMULO_HOME/bin/start-all.sh
 
 echo 'Done!'
-
