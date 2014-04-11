@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#ACCUMULO_VER=1.6.0-RC1
+ACCUMULO_VER_FILE=1.6.0.RC1
 ACCUMULO_VER=1.6.0
 HADOOP_VER=2.4.0
 ZOOKEEPER_VER=3.4.5
@@ -56,7 +56,7 @@ export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
 export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_HOME/lib/native 
 export HADOOP_OPTS="-Djava.library.path=$HADOOP_HOME/lib"
 
-sudo sysctl vm.swappiness=10
+sudo sysctl vm.swappiness=0
 
 #
 # For some reason I get a permission denied when
@@ -64,7 +64,7 @@ sudo sysctl vm.swappiness=10
 # perms before writing, then restore them.
 #
 sudo chmod 777 /etc/sysctl.conf
-echo "vm.swappiness = 10" >> /etc/sysctl.conf
+echo "vm.swappiness = 0" >> /etc/sysctl.conf
 echo "# disable ipv6" >> /etc/sysctl.conf
 echo "net.ipv6.conf.all.disable_ipv6 = 1" >> /etc/sysctl.conf
 echo "net.ipv6.conf.default.disable_ipv6 = 1" >> /etc/sysctl.conf
@@ -81,13 +81,18 @@ cd $VAGRANT_HOME
 echo "Acquiring archives..."
 echo "- Hadoop"
 cd tars
+
 curl -O -L http://apache.mirrors.tds.net/hadoop/common/hadoop-$HADOOP_VER/hadoop-$HADOOP_VER.tar.gz
+
 cd ..
 
 echo "Extracting archives..."
+echo "Hadoop $HADOOP_VER"
 tar -zxf tars/hadoop-$HADOOP_VER.tar.gz
+echo "Zookeeper $ZOOKEEPER_VER"
 tar -zxf tars/zookeeper-$ZOOKEEPER_VER.tar.gz
-tar -zxf tars/accumulo-$ACCUMULO_VER-bin.tar.gz
+echo "Accumulo $ACCUMULO_VER"
+tar -zxf tars/accumulo-$ACCUMULO_VER_FILE-bin.tar.gz
 
 echo "Configuring Hadoop..."
 
