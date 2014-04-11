@@ -13,8 +13,8 @@ Spins up a VM with Hadoop, Zookeeper and Accumulo.
 4. Run ```vagrant up``` from within the project directory. You'll need at least 2Gb free.
 5. Run ```vagrant ssh``` from within the project directory to get into your VM, or open up the VirtualBox
    Manager app to tweak settings, forward ports, etc.
-6. The app can now be accessed at port 10.211.55.111. To make it accessible at "accumulo-devbox", add
-   the following to the end of your /etc/hosts file: ```10.211.55.111 accumulo-devbox```
+6. The app can now be accessed at port 10.211.55.111. To make it accessible at "accumulo-devserver", add
+   the following to the end of your /etc/hosts file: ```10.211.55.111 accumulo-devserver```
 7. To connect to it from a client:
   - Instance name: accumulo
   - Zookeeper server: localhost:2181
