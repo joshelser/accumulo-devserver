@@ -3,7 +3,7 @@
 Spins up a VM with Hadoop, Zookeeper and Accumulo.
 - Hadoop 2.4.0
 - Zookeeper 3.4.5
-- Accumulo 1.6.0-RC1
+- Accumulo 1.6.0-RC2
 
 # Getting Started
 
